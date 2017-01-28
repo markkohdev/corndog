@@ -1,11 +1,14 @@
-import React from 'React'
+import React from 'react'
 import { IndexLink, Link } from 'react-router'
 import './Button.scss'
 
 export class Button extends React.Component {
+
   render() {
+    const { onClick } = this.props;
+
     return (
-      <button className="cd-button">
+      <button className="cd-button" onClick={onClick}>
       THIS IS A BUTTON
       </button>
     )
