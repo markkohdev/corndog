@@ -1,8 +1,11 @@
-import React from 'react'
-import { IndexLink, Link } from 'react-router'
+import React, { Component, PropTypes } from 'react';
 import './Button.scss'
 
-export class Button extends React.Component {
+export default class Button extends React.Component {
+  static propTypes = {
+      className: PropTypes.string,
+      onClick: PropTypes.func,
+  };
 
   render() {
     const { onClick } = this.props;
@@ -11,8 +14,6 @@ export class Button extends React.Component {
       <button className="cd-button" onClick={onClick}>
       THIS IS A BUTTON
       </button>
-    )
+    );
   }
 }
-
-export default Button

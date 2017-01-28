@@ -3,8 +3,9 @@ import DuckImage from '../assets/Duck.jpg'
 import Button from '../../../components/Button'
 import './HomeView.scss'
 
-export class HomeView extends React.Component {
-  autheticatedUser = () => {
+export default class HomeView extends React.Component {
+  authenticatedUser = () => {
+    console.log('this');
     alert('yay');
   }
 
@@ -20,5 +21,3 @@ export class HomeView extends React.Component {
     )
   }
 }
-
-export default HomeView
