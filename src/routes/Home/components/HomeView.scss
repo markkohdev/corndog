@@ -1,5 +1,32 @@
-.duck {
-  display: block;
-  width: 120px;
-  margin: 1.5rem auto;
+@import "../../../styles/variables";
+
+.home {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/home-bg.jpg');
+  background-size: cover;
+  background-position: center;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $black;
+    opacity: 0.6;
+  }
+
+  &__container {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto;
+    width: 60%;
+  }
 }

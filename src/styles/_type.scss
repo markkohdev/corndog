@@ -1,0 +1,34 @@
+@import "variables";
+
+html,
+body {
+  font-size: 17px;
+  font-family: "Proxima Nova","Helvetica Neue","Helvetica","Arial",sans-serif;
+  -webkit-font-smoothing: anti-aliased;
+}
+
+h1,
+.cd-heading-1 {
+  font-size: 3.5rem;
+}
+
+h2,
+.cd-heading-2 {
+  font-size: 1.6rem;
+  line-height: 1.3;
+  font-weight: 300;
+}
+
+.cd-paragraph--large {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  font-weight: 400;
+}
+
+.text--green {
+  color: $green;
+}
+
+.text--white {
+  color: $white;
+}

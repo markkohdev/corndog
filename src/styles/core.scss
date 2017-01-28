@@ -1,5 +1,6 @@
 @import 'base';
 @import '~normalize.css/normalize';
+@import 'type';
 
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
@@ -18,4 +19,15 @@ body {
 *:before,
 *:after {
   box-sizing: inherit;
+}
+
+.core-layout {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.text--center {
+  text-align: center;
 }
