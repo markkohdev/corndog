@@ -5,6 +5,7 @@ export default class FetchView extends Component {
   componentDidMount() {
     const {calledApi} = this.props;
     calledApi();
+    window.props = this.props;
   }
 
   render() {

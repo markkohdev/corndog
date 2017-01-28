@@ -11,7 +11,7 @@ export const FETCH = 'FETCH_MATRIX_STORED'
 // ------------------------------------
 export function calledApi(){
   console.log('calledApi');
-  const value = [];
+  const value = ['I','CAN','MAKE','THIS','WORK'];
   return {
     type: FETCH_API_CALLED,
     payload: value
@@ -48,7 +48,8 @@ export const doubleAsync = () => {
 
 export const actions = {
   increment,
-  doubleAsync
+  doubleAsync,
+  calledApi
 }
 
 // ------------------------------------
@@ -57,17 +58,17 @@ export const actions = {
 const ACTION_HANDLERS = {
   [COUNTER_INCREMENT]    : (state, action) => state + action.payload,
   [COUNTER_DOUBLE_ASYNC] : (state, action) => state * 2,
-  [FETCH_API_CALLED] : (state, action) => state.songList.push('1')
+  [FETCH_API_CALLED] : (state, action) => { return {...state, songList:action.payload}}
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 const initialState = {
-  songList: []
+  somethingElse: [],
+  songList: ['OMG']
 }
 export default function fetchReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
-
-  return handler ? handler(state, action) : state
+  const handler = ACTION_HANDLERS[action.type];
+  return handler ? handler(state, action) : state;
 }
