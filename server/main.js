@@ -2,6 +2,7 @@ const express = require('express')
 const debug = require('debug')('app:server')
 const path = require('path')
 const webpack = require('webpack')
+const cookieParser = require('cookie-parser')
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
 const compress = require('compression')
@@ -40,7 +41,7 @@ if (project.env === 'development') {
   app.use(express.static(project.paths.public()))
 
   // Serve the API tho??
-  app.use(require('./routes'))
+  app.use(cookieParser()).use(require('./routes'))
 
 
   // This rewrites all routes requests to the root /index.html file

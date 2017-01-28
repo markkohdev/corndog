@@ -53,17 +53,21 @@ router.get('/callback', (req, res) => {
     spotifyApi.authorizationCodeGrant(code).then(data => {
       const { expires_in, access_token, refresh_token } = data.body;
 
-      // Set the access token on the API object to use it in later calls
-      spotifyApi.setAccessToken(access_token);
-      spotifyApi.setRefreshToken(refresh_token);
+      // // Set the access token on the API object to use it in later calls
+      // spotifyApi.setAccessToken(access_token);
+      // spotifyApi.setRefreshToken(refresh_token);
 
-      // use the access token to access the Spotify Web API
-      spotifyApi.getMe().then(({ body }) => {
-        console.log(body);
-      });
+      // // use the access token to access the Spotify Web API
+      // spotifyApi.getMe().then(({ body }) => {
+      //   console.log(body);
+      // });
+
+      // Set the cookies so we have em at the fetch jawn
+      res.cookie('spotify_access_token', access_token);
+      res.cookie('spotify_refresh_token', refresh_token);
 
       // we can also pass the token to the browser to make requests from there
-      res.redirect(`/#/user/${access_token}/${refresh_token}`);
+      res.redirect(`/fetch`);
     }).catch(err => {
       res.redirect('/#/error/invalid token');
     });
