@@ -8,11 +8,11 @@ export default class Button extends React.Component {
   };
 
   render() {
-    const { onClick } = this.props;
+    const { onClick, buttonName } = this.props;
 
     return (
       <button className="cd-button" onClick={onClick}>
-      THIS IS A BUTTON
+        {buttonName}
       </button>
     );
   }
