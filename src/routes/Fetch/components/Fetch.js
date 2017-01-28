@@ -1,22 +1,20 @@
-import React from 'react'
+import React, { Component } from 'react'
+import Button from '../../../components/Button'
 
-export const Fetch = (props) => (
-  <div style={{ margin: '0 auto' }} >
-    <h2>Fetch: {props.fetch}</h2>
-    <button className='btn btn-default' onClick={props.increment}>
-      Increment
-    </button>
-    {' '}
-    <button className='btn btn-default' onClick={props.doubleAsync}>
-      Double (Async)
-    </button>
-  </div>
-)
+export default class FetchView extends Component {
+  componentDidMount() {
+    const {calledApi} = this.props;
+    calledApi();
+  }
 
-Fetch.propTypes = {
-  fetch     : React.PropTypes.number.isRequired,
-  doubleAsync : React.PropTypes.func.isRequired,
-  increment   : React.PropTypes.func.isRequired
+  render() {
+    return (
+      <div className="home">
+        <div className="home__container text--center">
+          <h1 className="text--green">Corndog Playlist Generator</h1>
+          <h2 className="text--white">Generate the playlist of your life by customizing settings and all the junk! All you have to do is log in to your Spotify account.</h2>
+        </div>
+      </div>
+    )
+  }
 }
-
-export default Fetch

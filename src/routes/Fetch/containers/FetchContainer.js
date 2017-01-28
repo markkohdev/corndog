@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { increment, doubleAsync } from '../modules/fetch'
+import { calledApi } from '../modules/fetch'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -13,8 +13,7 @@ import Fetch from '../components/Fetch'
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  increment : () => increment(1),
-  doubleAsync
+  calledApi
 }
 
 const mapStateToProps = (state) => ({

@@ -4,7 +4,7 @@ import './HomeView.scss'
 
 export default class HomeView extends Component {
   authenticatedUser = () => {
-    alert('yay');
+    window.location = '/login';
   }
 
   render() {
