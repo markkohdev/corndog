@@ -3,9 +3,18 @@ import Button from '../../../components/Button'
 
 export default class FetchView extends Component {
   componentDidMount() {
-    const {calledApi} = this.props;
-    calledApi();
-    window.props = this.props;
+    const {calledApi, fetch: { offset, songList, total }} = this.props;
+    if (!songList.length > total) {
+      calledApi(offset, songList, total);
+    }
+  }
+
+  componentDidUpdate() {
+    const {calledApi, fetch: { offset, songList, total }} = this.props;
+    console.log(songList.length, total);
+    if (songList.length < total) {
+      calledApi(offset, songList, total);
+    }
   }
 
   render() {

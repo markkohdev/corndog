@@ -1,4 +1,7 @@
 import { browserHistory } from 'react-router'
+import cookie from 'react-cookie';
+const SpotifyWebApi = require('spotify-web-api-js');
+
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -9,11 +12,26 @@ export const REDIRECT_TO_FEATURES = 'REDIRECT_TO_FEATURES'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function calledApi() {
-  const value = ['I','CAN','MAKE','THIS','WORK'];
-  return {
-    type: FETCH_API_CALLED,
-    payload: value
+export function calledApi(offset, songList = [], total) {
+  return (dispatch, getState) => {
+    const spotify = new SpotifyWebApi();
+    const access_token = cookie.load('spotify_access_token');
+    spotify.setAccessToken(access_token);
+    // Get the first set of tracks so we can get the total
+    spotify.getMySavedTracks({offset}).then(function(data) {
+      // Update the total number of tracks (for pagination purposes)
+      console.log(data);
+      const total = data.total;
+      const tracks = data.items;
+
+      dispatch({
+        type: FETCH_API_CALLED,
+        payload: {
+          tracks,
+          total
+        }
+      })
+    });
   }
 }
 
@@ -34,9 +52,15 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [FETCH_API_CALLED] : (state, action) => { 
+    let { offset, songList } = state;
+    const { total, tracks } = action.payload;
+    const newSonglist = songList.slice(0).concat(tracks);
+    const newOffset = offset += 20;
     return {
       ...state,
-      songList:action.payload
+      songList: newSonglist,
+      offset: newOffset,
+      total
     }
   }
 }
@@ -45,7 +69,10 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  songList: ['OMG']
+  songList: [],
+  offset: 0,
+  pageNumber: 0,
+  total: null
 }
 export default function fetchReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
