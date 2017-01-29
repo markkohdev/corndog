@@ -30,7 +30,7 @@ export function generateSimilarities(allFeatures, songList, features, minMax, FE
   const preferenceVector = [];
   FEATURES.forEach(function(featureKey) {
     // Weight the value
-    const weightedPreferenceValue = allFeatures[featureKey] / 100.0;
+    const weightedPreferenceValue = allFeatures[featureKey].value / 100.0;
 
     // Then push it to the preferenceVector
     preferenceVector.push(weightedPreferenceValue);
@@ -61,13 +61,28 @@ export function generateSimilarities(allFeatures, songList, features, minMax, FE
   }
 }
 
+// Compare two similarityobjects
+function compareTrack(a, b) {
+  if (a.cosine < b.cosine)
+    return -1;
+  else if (b.cosine > a.cosine)
+    return 1;
+  else
+    return 0;
+}
+
 export function generatePlaylist(similarities) {
   const orderedTrackIds = [];
+
+  // Sort tracks by similarity
+  similarities.sort(compareTrack);
+
+  console.log('Sorted:', similarities);
 
   return {
     type: GENERATE_PLAYLIST,
     payload: {
-      playlistTracks: orderedTrackIds
+      playlistTracks: similarities
     }
   }
 }
