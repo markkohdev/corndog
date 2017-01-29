@@ -30,7 +30,11 @@ export function generateSimilarities(allFeatures, songList, features, minMax, FE
   const preferenceVector = [];
   FEATURES.forEach(function(featureKey) {
     // Weight the value
-    const weightedPreferenceValue = allFeatures[featureKey].value / 100.0;
+    let weightedPreferenceValue = allFeatures[featureKey].value / 100.0;
+    const featureMin = minMax[featureKey].min;
+    const featureMax = minMax[featureKey].max;
+    const range = featureMax - featureMin;
+    weightedPreferenceValue = featureMin + (weightedPreferenceValue * range);
 
     // Then push it to the preferenceVector
     preferenceVector.push(weightedPreferenceValue);

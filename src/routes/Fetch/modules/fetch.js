@@ -58,7 +58,7 @@ export function calledApi(offset, songList = [], total) {
 
 export function fetchFeatures(tracks, features) {
   return (dispatch, getState) => {
-    let features = [];
+    let newFeatures = [];
     const limit = 100;
     const current = features.length;
 
@@ -70,13 +70,13 @@ export function fetchFeatures(tracks, features) {
       data.audio_features.forEach(function(track_features) {
         // Extract feature arrays
         const extractedFeatures = getFeaturesForTrack(track_features);
-        features.push(extractedFeatures);
+        newFeatures.push(extractedFeatures);
       });
 
       dispatch({
         type: FETCH_FEATURES_CALLED,
         payload: {
-          newFeatures: features
+          newFeatures
         }
       });
     }).catch(function(err) {
