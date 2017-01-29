@@ -5,34 +5,24 @@ import 'rc-slider/assets/index.css';
 import './Success.scss';
 
 export default class FeatureView extends Component {
-  handleSliderChange = (newValue, success) => {
-    console.log(newValue, success);
-    const { successSliderChanged } = this.props;
-    successSliderChanged(newValue, success);
-  }
-
-  goToNextFeature = () => {
-    const { navigatedToNextFeature, generatePlaylists, success: {allSuccess, currentFeatureIndex} } = this.props;
-    if (currentFeatureIndex < Object.keys(allSuccess).length - 1) {
-      navigatedToNextFeature();
-    } else {
-      generatePlaylists();
-    }
-  }
-
-  goToPrevFeature = () => {
-    const { navigatedToPrevFeature } = this.props;
-    navigatedToPrevFeature();
-  }
-
   render() {
     const { success: { allSuccess, currentFeatureIndex}} = this.props;
     const allFeatureKeys = Object.keys(allSuccess);
     const btnName = currentFeatureIndex < allFeatureKeys.length - 1 ? "next" : "submit";
-    console.log(this.props);
     return (
       <div className="allSuccess">
-        <iframe src="https://embed.spotify.com/?uri=spotify:user:jztaddwater:playlist:2yEH4RJuhGJK56s6zVlwhQ" width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
+        <div className="allSuccess__container">
+          <div className="allSuccess__title">
+            <h2 className="text--green">Welcome to your shiny new playlist!</h2>
+            <p>You can also check it out in your Spotify app. Enjoy!</p>
+          </div>
+          <div>
+            <div className="allSuccess__playlist">
+              <iframe src="https://embed.spotify.com/?uri=spotify:user:jztaddwater:playlist:2yEH4RJuhGJK56s6zVlwhQ" width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
+            </div>
+            <Button className="cd-button--filled" buttonName="Make another playlist" onClick={() => {}}/>
+          </div>
+        </div>
       </div>
     )
   }
