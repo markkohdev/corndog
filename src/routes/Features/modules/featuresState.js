@@ -5,6 +5,7 @@ import { browserHistory } from 'react-router'
 // ------------------------------------
 export const FEATURES_SLIDER_CHANGED = "FEATURES_SLIDER_CHANGED";
 export const FEATURES_GO_NEXT_FEATURE = "FEATURES_GO_NEXT_FEATURE";
+export const FEATURES_GO_PREV_FEATURE = "FEATURES_GO_PREV_FEATURE";
 
 // ------------------------------------
 // Actions
@@ -28,6 +29,12 @@ export function navigatedToNextFeature() {
   }
 }
 
+export function navigatedToPrevFeature() {
+  return {
+    type: FEATURES_GO_PREV_FEATURE,
+  }
+}
+
 export const actions = {
   featureSliderChanged,
   navigatedToNextFeature
@@ -41,16 +48,26 @@ const ACTION_HANDLERS = {
     const { featureType, value } = action.payload;
     return {
       ...state,
-      currentFeature: {
-        ...state.currentFeature,
-        type: featureType,
-        value,
+      allFeatures: {
+        ...state.allFeatures,
+        [featureType]: value
       }
     }
   },
   [FEATURES_GO_NEXT_FEATURE] : (state, action) => {
     const { currentFeatureIndex, allFeatures} = state;
     const nextIndex = state.currentFeatureIndex + 1;
+    return {
+      ...state,
+      currentFeatureIndex: nextIndex,
+      currentFeature: {
+        type: allFeatures[nextIndex]
+      }
+    }
+  },
+  [FEATURES_GO_PREV_FEATURE] : (state, action) => {
+    const { currentFeatureIndex, allFeatures} = state;
+    const nextIndex = state.currentFeatureIndex - 1;
     return {
       ...state,
       currentFeatureIndex: nextIndex,
@@ -65,11 +82,14 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  currentFeature: {
-    type: "danceability",
-    value: 50
+  allFeatures: {
+    'danceability': 50,
+    'energy': 50,
+    'liveness': 50,
+    'acousticness': 50,
+    'speechiness': 50,
+    'valence': 50
   },
-  allFeatures: ['danceability', 'energy', 'liveness', 'acousticness', 'speechiness', 'valence'],
   currentFeatureIndex: 0
 }
 export default function featureReducer (state = initialState, action) {

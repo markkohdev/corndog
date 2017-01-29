@@ -10,28 +10,36 @@ export default class FeatureView extends Component {
     const { featureSliderChanged } = this.props;
     featureSliderChanged(newValue, feature);
   }
+
   goToNextFeature = () => {
-    const { navigatedToNextFeature } = this.props;
+    const { navigatedToNextFeature, features: {allFeatures, currentFeatureIndex} } = this.props;
     navigatedToNextFeature();
   }
+
+  goToPrevFeature = () => {
+    const { navigatedToPrevFeature } = this.props;
+    navigatedToPrevFeature();
+  }
+
   render() {
-    const { features: { allFeatures, currentFeature}} = this.props;
+    const { features: { allFeatures, currentFeatureIndex}} = this.props;
+    const allFeatureKeys = Object.keys(allFeatures);
     console.log(this.props);
-    console.log(allFeatures);
     return (
       <div className="allFeatures">
       { 
-        allFeatures.map((feature, index) => {
+        allFeatureKeys.map((feature, index) => {
           const featureValue = allFeatures[feature];
-          const currentValue = currentFeature.value;
-          const activeClass = currentFeature.type === feature ? 'features--active' : "";
+          const currentFeature = allFeatureKeys[currentFeatureIndex];
+          console.log(currentFeatureIndex,currentFeature, feature);
+          const activeClass = currentFeature === feature ? 'features--active' : "";
           return (
             <div className={`features ${activeClass}`} key={index}>
               <div className="features__container text--center">
                 <h1 className="text--green">{feature}</h1>
                 <Slider
                   defaultValue={50}
-                  value={currentValue}
+                  value={featureValue}
                   onChange={(newValue) => this.handleSliderChange(newValue, feature)}
                 />
               </div>
@@ -39,7 +47,8 @@ export default class FeatureView extends Component {
           )
         })
       }
-      <Button className="cd-button cd-button--green" buttonName="next" onClick={this.goToNextFeature}/>
+      { currentFeatureIndex > 0 ? <Button className="cd-button cd-button--green" buttonName="previous" onClick={this.goToPrevFeature}/> : null }
+      { currentFeatureIndex < allFeatureKeys.length - 1 ? <Button className="cd-button cd-button--green" buttonName="next" onClick={this.goToNextFeature}/> : null }
       </div>
     )
   }
