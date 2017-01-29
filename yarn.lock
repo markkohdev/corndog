@@ -5622,10 +5622,6 @@ text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
-throttled-promise@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/throttled-promise/-/throttled-promise-1.0.1.tgz#22b9b31bb260f44108db8184d20fb21f1215b5e4"
-
 throttleit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/throttleit/-/throttleit-1.0.0.tgz#9e785836daf46743145a5984b6268d828528ac6c"

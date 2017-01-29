@@ -1,7 +1,6 @@
 import { browserHistory } from 'react-router'
 import cookie from 'react-cookie';
 const SpotifyWebApi = require('spotify-web-api-js');
-const ThrottledPromise = require('throttled-promise');
 
 // ------------------------------------
 // Constants
@@ -46,7 +45,6 @@ export function calledApi(offset, songList = [], total) {
       // Update the total number of tracks (for pagination purposes)
       const total = data.total;
       const tracks = data.items.map((item) => item.track);
-      console.log(tracks);
       dispatch({
         type: FETCH_API_CALLED,
         payload: {
@@ -58,51 +56,36 @@ export function calledApi(offset, songList = [], total) {
   }
 }
 
-export function fetchFeatures(tracks) {
+export function fetchFeatures(tracks, features) {
   return (dispatch, getState) => {
-    return new Promise((listCompleteResolve) => {
-      let features = [];
-      let promises = [];
-      const limit = 100;
-      let current = 0;
+    let features = [];
+    const limit = 100;
+    const current = features.length;
 
-      // Iterate through the tracks array and create slices of size 100 to query the API with
-      while(current < tracks.length) {
-        let upper = current + limit <= tracks.length ? current + limit : tracks.length ;
-        const subarray = tracks.slice(current, upper);
-        let ids = subarray.map(function(track) { return track.id });
+    let upper = current + limit <= tracks.length ? current + limit : tracks.length;
+    const subarray = tracks.slice(current, upper);
+    let ids = subarray.map(function(track) { return track.id });
 
-        let featuresPromise = spotify.getAudioFeaturesForTracks(ids);
-        promises.push(featuresPromise);
+    spotify.getAudioFeaturesForTracks(ids).then(function(data) {
+      data.audio_features.forEach(function(track_features) {
+        // Extract feature arrays
+        const extractedFeatures = getFeaturesForTrack(track_features);
+        features.push(extractedFeatures);
+      });
 
-        current += upper;
-      }
-
-      ThrottledPromise.all(promises, 5).then(function(results) {
-        const features = [];
-
-        results.forEach(function(result) {
-          result.audio_features.forEach(function(track_features) {
-            const extractedFeatures = getFeaturesForTrack(track_features);
-            features.push(extractedFeatures);
-          });
-        });
-
-        dispatch({
-          type: FETCH_FEATURES_CALLED,
-          payload: {
-            features
-          }
-        });
-      }).catch(function(err) {
-        console.log('Aw shit: ', err);
-      })
-    })
+      dispatch({
+        type: FETCH_FEATURES_CALLED,
+        payload: {
+          newFeatures: features
+        }
+      });
+    }).catch(function(err) {
+      console.log('Audio feature fetch failed :( ', err);
+    });
   }
 }
 
 export function extractMinMax(tracks, features) {
-  console.log('inhere');
   const featureMinMaxMap = {};
 
   for(let i=0; i < FEATURES.length; i++){
@@ -185,10 +168,12 @@ const ACTION_HANDLERS = {
     }
   },
   [FETCH_FEATURES_CALLED] : (state, action) => {
-    const { features } = action.payload;
+    let { features } = state;
+    const { newFeatures } = action.payload;
+    const newFeaturesState = features.slice(0).concat(newFeatures);
     return {
       ...state,
-      features
+      features: newFeaturesState
     }
   },
   [FETCH_MIN_MAX] : (state, action) => {
