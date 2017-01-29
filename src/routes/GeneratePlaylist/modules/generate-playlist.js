@@ -72,18 +72,53 @@ function compareTrack(a, b) {
 }
 
 export function generatePlaylist(similarities) {
-  const orderedTrackIds = [];
+  return (dispatch, getState) => {
 
-  // Sort tracks by similarity
-  similarities.sort(compareTrack);
+    // Sort tracks by similarity
+    similarities.sort(compareTrack);
 
-  console.log('Sorted:', similarities);
+    console.log('Sorted:', similarities);
 
-  return {
-    type: GENERATE_PLAYLIST,
-    payload: {
-      playlistTracks: similarities
-    }
+    // Get the first 30 tracks
+    const first30 = similarities.slice(0,30);
+    const first30Ids = first30.map((simObj) => simObj.track.uri);
+
+    // Setup the Spotify client
+    const spotify = new SpotifyWebApi();
+    const access_token = cookie.load('spotify_access_token');
+    spotify.setAccessToken(access_token);
+
+    spotify.getMe().then(function(me) {
+      console.log(me);
+
+      const userId = me.id;
+
+      spotify.createPlaylist(userId, {name: 'Corndog'}).then(function(playlistInfo) {
+        console.log(playlistInfo);
+
+        const playlistId = playlistInfo.id;
+        const playlistUri = playlistInfo.uri;
+
+        spotify.addTracksToPlaylist(userId, playlistId, first30Ids).then(function(response) {
+          console.log(response);
+
+          dispatch({
+            type: GENERATE_PLAYLIST,
+            payload: {
+              playlistUri: playlistUri
+            }
+          })
+        }).catch(function(err) {
+          console.log('Couldn\'t add tracks', err)
+        })
+
+      }).catch(function(err) {
+        console.log('Couldn\'t create playlist', err)
+      })
+
+    }).catch(function(err) {
+      console.log('Couldn\'t get me: ', err)
+    });
   }
 }
 
@@ -113,10 +148,10 @@ const ACTION_HANDLERS = {
     }
   },
   [GENERATE_PLAYLIST] : (state, action) => {
-    const { playlistTracks } = action.payload;
+    const { playlistUri } = action.payload;
     return {
       ...state,
-      playlistTracks
+      playlistUri
     }
   }
 }
@@ -125,7 +160,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  playlistTracks: [],
+  playlistUri: null,
   similarities: []
 }
 export default function fetchReducer (state = initialState, action) {
