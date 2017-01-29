@@ -13,12 +13,12 @@ export default (store) => ({
       const reducer = require('./modules/generate-playlist').default
 
       /*  Add the reducer to the store on key 'GeneratePlaylist'  */
-      injectReducer(store, { key: 'GeneratePlaylist', reducer })
+      injectReducer(store, { key: 'generate', reducer })
 
       /*  Return getComponent   */
       cb(null, GeneratePlaylist)
 
     /* Webpack named bundle   */
-    }, 'GeneratePlaylist')
+    }, 'generate')
   }
 })

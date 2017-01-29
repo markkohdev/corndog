@@ -17,7 +17,9 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state) => ({
-  GeneratePlaylist : state.GeneratePlaylist
+  features : state.features,
+  fetch: state.fetch,
+  generate: state.generate
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

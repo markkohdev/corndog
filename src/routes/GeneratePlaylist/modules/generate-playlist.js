@@ -5,100 +5,63 @@ const SpotifyWebApi = require('spotify-web-api-js');
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const FETCH_API_CALLED = 'FETCH_API_CALLED'
-export const FETCH_FEATURES_CALLED = 'FETCH_FEATURES_CALLED'
-export const GeneratePlaylist = 'FETCH_MATRIX_STORED'
-export const REDIRECT_TO_FEATURES = 'REDIRECT_TO_FEATURES'
+export const GENERATE_PLAYLIST = 'GENERATE_PLAYLIST'
+export const REDIRECT_TO_SUCCESS = 'REDIRECT_TO_SUCCESS'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 
-export function generatePlaylist(songList, features) {
+function cosineSimilarity(a, b) {
+
+}
+
+export function generatePlaylist(allFeatures, songList, features, minMax, FEATURES) {
+  console.log('Prefernce Vector', allFeatures);
   console.log('Songz: ', songList);
   console.log('Features: ', features);
-}
 
-export function fetchFeatures(tracks) {
-  return (dispatch, getState) => {
-    return new Promise((listCompleteResolve) => {
-      let features = [];
-      let promises = [];
-      const limit = 100;
-      let current = 0;
+  // Build our preference vector
+  const preferenceVector = [];
+  FEATURES.forEach(function(featureKey) {
+    // Weight the value
 
-      // Iterate through the tracks array and create slices of size 100 to query the API with
-      while(current < tracks.length) {
-        let upper = current + limit <= tracks.length ? current + limit : tracks.length ;
-        const subarray = tracks.slice(current, upper);
-        let ids = subarray.map(function(track) { return track.id });
+    // Then push it to the preferenceVector
+    preferenceVector.push(allFeatures[feature])
+  });
 
-        let featuresPromise = spotify.getAudioFeaturesForTracks(ids);
-        promises.push(featuresPromise);
-
-        current += upper;
-      }
-
-      Promise.all(promises).then(function(results) {
-        const features = [];
-
-        results.forEach(function(result) {
-          // console.log(result);
-          result.audio_features.forEach(function(feature) {
-            features.push(feature);
-          });
-        });
-
-        dispatch({
-          type: FETCH_FEATURES_CALLED,
-          payload: {
-            features
-          }
-        });
-      }).catch(function(err) {
-        console.log('Aw shit: ', err);
-      })
-    })
+  const similarities = [];
+  for(let i=0; i<features.length; i++) {
+    const featureRow = features[i];
+    const track = songList[i];
+    // Todo: Scale the vector values from 0-1
+    // Todo: calculate cosine similarity
   }
+
 }
 
-export function redirectToFeatures() {
-  browserHistory.push('/features')
+export function redirectToSuccess() {
+  browserHistory.push('/success')
 
   return {
-    type: REDIRECT_TO_FEATURES
+    type: REDIRECT_TO_SUCCESS
   }
 }
 
 export const actions = {
   generatePlaylist,
-  fetchFeatures,
-  redirectToFeatures
+  redirectToSuccess
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [FETCH_API_CALLED] : (state, action) => {
-    let { offset, songList } = state;
-    const { total, tracks } = action.payload;
-    const newSonglist = songList.slice(0).concat(tracks);
-    const newOffset = newSonglist.length;
-    console.log(newOffset, newSonglist);
+  [GENERATE_PLAYLIST] : (state, action) => {
+    const { playlistTracks } = action.payload;
     return {
       ...state,
-      songList: newSonglist,
-      offset: newOffset,
-      total
-    }
-  },
-  [FETCH_FEATURES_CALLED] : (state, action) => {
-    const { features } = action.payload;
-    console.log('action total', state.total);
-    return {
-      ...state,
-      features
+      playlistTracks
     }
   }
 }
@@ -107,10 +70,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  songList: [],
-  offset: 0,
-  total: 0,
-  features: []
+  playlistTracks: []
 }
 export default function fetchReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
