@@ -5,13 +5,16 @@ export default class GeneratePlaylistView extends Component {
 
   componentDidMount() {
     console.log('props', this.props);
-    const {generatePlaylist, fetch: { songList, features, minMax, FEATURES }, features: { allFeatures }} = this.props;
-    generatePlaylist(allFeatures, songList, features, minMax, FEATURES);
+    const {generateSimilarities, fetch: { songList, features, minMax, FEATURES }, features: { allFeatures }} = this.props;
+    generateSimilarities(allFeatures, songList, features, minMax, FEATURES);
   }
 
   componentDidUpdate() {
-    const {redirectToSuccess, generate: { playlistTracks }} = this.props;
-    if (playlistTracks.length > 0) {
+    const {generatePlaylist, redirectToSuccess, fetch: {total}, generate: { similarities, playlistTracks }} = this.props;
+    console.log('props', this.props);
+    if (playlistTracks.length < similarities.length) {
+      generatePlaylist(similarities);
+    } else {
       console.log('Success!');
       redirectToSuccess();
     }
