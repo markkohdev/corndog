@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Button from '../../../components/Button'
+import './Fetch.scss'
 
 export default class FetchView extends Component {
   componentDidMount() {
@@ -27,9 +28,9 @@ export default class FetchView extends Component {
   render() {
     const { redirectToFeatures, fetch: { total } } = this.props;
     return (
-      <div className="home">
-        <div className="home__container text--center">
-          <h1 className="text--green">Hold up, we're gonna go do some math with your { total > 0 ? total : ''}  saved tracks...</h1>
+      <div className="fetch">
+        <div className="fetch__container text--center">
+          <h2 className="text--white">Hold up, we're gonna go do some math with your { total > 0 ? total : ''}  saved tracks...</h2>
         </div>
       </div>
     )

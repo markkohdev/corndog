@@ -1,6 +1,6 @@
 @import "src/styles/variables";
 
-.home {
+.fetch {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-image: url('../assets/home-bg.jpg');
+  background-image: url('../assets/fetch-background.jpg');
   background-size: cover;
   background-position: center;
 
@@ -33,5 +33,6 @@
     z-index: 1;
     margin: 0 auto;
     width: 60%;
+    max-width: 700px;
   }
 }

@@ -18,11 +18,32 @@
   text-transform: uppercase;
   width: 100%;
 
+  &:hover {
+    color: darken($white, 5%);
+  }
+
   &:focus {
     outline: none;
   }
 
   &--green {
     color: $green;
+
+    &:hover {
+       color: darken($green, 10%);
+    }
+  }
+
+  &--filled {
+    border-color: $green;
+    background: $green;
+    font-weight: 600;
+    color: $white;
+
+    &:hover {
+      background: darken($green, 10%);
+      border-color: darken($green, 10%);
+      color: $white;
+    }
   }
 }

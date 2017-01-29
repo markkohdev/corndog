@@ -7,6 +7,7 @@ export const FEATURES_SLIDER_CHANGED = "FEATURES_SLIDER_CHANGED";
 export const FEATURES_GO_NEXT_FEATURE = "FEATURES_GO_NEXT_FEATURE";
 export const FEATURES_GO_PREV_FEATURE = "FEATURES_GO_PREV_FEATURE";
 export const FEATURES_GENERATE_PLAYLISTS = "FEATURES_GENERATE_PLAYLISTS";
+export const FEATURES_GO_TO_INDEX = "FEATURES_GO_TO_INDEX";
 
 // ------------------------------------
 // Actions
@@ -33,6 +34,15 @@ export function navigatedToNextFeature() {
 export function navigatedToPrevFeature() {
   return {
     type: FEATURES_GO_PREV_FEATURE,
+  }
+}
+
+export function goToIndex(index) {
+  return {
+    type: FEATURES_GO_TO_INDEX,
+    payload: {
+      index
+    }
   }
 }
 
@@ -84,6 +94,17 @@ const ACTION_HANDLERS = {
       currentFeatureIndex: nextIndex,
       currentFeature: {
         type: allFeatures[nextIndex]
+      }
+    }
+  },
+  [FEATURES_GO_TO_INDEX] : (state, action) => {
+    const { currentFeatureIndex, allFeatures} = state;
+    const { index } = action.payload;
+    return {
+      ...state,
+      currentFeatureIndex: index,
+      currentFeature: {
+        type: allFeatures[index]
       }
     }
   }
