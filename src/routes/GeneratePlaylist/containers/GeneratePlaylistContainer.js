@@ -13,7 +13,7 @@ import GeneratePlaylist from '../components/GeneratePlaylist'
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  cgeneratePlaylist
+  generatePlaylist
 }
 
 const mapStateToProps = (state) => ({

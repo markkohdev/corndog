@@ -12,8 +12,12 @@ export default class FeatureView extends Component {
   }
 
   goToNextFeature = () => {
-    const { navigatedToNextFeature, features: {allFeatures, currentFeatureIndex} } = this.props;
-    navigatedToNextFeature();
+    const { navigatedToNextFeature, generatePlaylists, features: {allFeatures, currentFeatureIndex} } = this.props;
+    if (currentFeatureIndex < Object.keys(allFeatures).length - 1) {
+      navigatedToNextFeature();
+    } else {
+      generatePlaylists();
+    }
   }
 
   goToPrevFeature = () => {
@@ -24,6 +28,7 @@ export default class FeatureView extends Component {
   render() {
     const { features: { allFeatures, currentFeatureIndex}} = this.props;
     const allFeatureKeys = Object.keys(allFeatures);
+    const btnName = currentFeatureIndex < allFeatureKeys.length - 1 ? "next" : "submit";
     console.log(this.props);
     return (
       <div className="allFeatures">
@@ -48,7 +53,7 @@ export default class FeatureView extends Component {
         })
       }
       { currentFeatureIndex > 0 ? <Button className="cd-button cd-button--green" buttonName="previous" onClick={this.goToPrevFeature}/> : null }
-      { currentFeatureIndex < allFeatureKeys.length - 1 ? <Button className="cd-button cd-button--green" buttonName="next" onClick={this.goToNextFeature}/> : null }
+      <Button className="cd-button cd-button--green" buttonName={btnName} onClick={this.goToNextFeature}/>
       </div>
     )
   }

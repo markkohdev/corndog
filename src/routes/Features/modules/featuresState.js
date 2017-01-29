@@ -6,6 +6,7 @@ import { browserHistory } from 'react-router'
 export const FEATURES_SLIDER_CHANGED = "FEATURES_SLIDER_CHANGED";
 export const FEATURES_GO_NEXT_FEATURE = "FEATURES_GO_NEXT_FEATURE";
 export const FEATURES_GO_PREV_FEATURE = "FEATURES_GO_PREV_FEATURE";
+export const FEATURES_GENERATE_PLAYLISTS = "FEATURES_GENERATE_PLAYLISTS";
 
 // ------------------------------------
 // Actions
@@ -32,6 +33,16 @@ export function navigatedToNextFeature() {
 export function navigatedToPrevFeature() {
   return {
     type: FEATURES_GO_PREV_FEATURE,
+  }
+}
+
+export function generatePlaylists() {
+  return (dispatch, getState) => {
+    browserHistory.push('/generate');
+
+    dispatch({
+      type: FEATURES_GENERATE_PLAYLISTS,
+    });
   }
 }
 
