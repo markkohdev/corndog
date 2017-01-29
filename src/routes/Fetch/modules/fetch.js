@@ -1,6 +1,7 @@
 import { browserHistory } from 'react-router'
 import cookie from 'react-cookie';
 const SpotifyWebApi = require('spotify-web-api-js');
+const ThrottledPromise = require('throttled-promise');
 
 // ------------------------------------
 // Constants
@@ -76,7 +77,7 @@ export function fetchFeatures(tracks) {
         current += upper;
       }
 
-      Promise.all(promises).then(function(results) {
+      ThrottledPromise.all(promises, 5).then(function(results) {
         const features = [];
 
         results.forEach(function(result) {

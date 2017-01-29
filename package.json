@@ -89,7 +89,6 @@
     "css-loader": "^0.26.0",
     "cssnano": "^3.7.4",
     "debug": "^2.2.0",
-    "es6-promise-pool": "^2.4.4",
     "extract-text-webpack-plugin": "^1.0.0",
     "file-loader": "^0.9.0",
     "font-awesome": "FortAwesome/Font-Awesome",
@@ -115,6 +114,7 @@
     "spotify-web-api-js": "^0.21.2",
     "spotify-web-api-node": "^2.3.6",
     "style-loader": "^0.13.1",
+    "throttled-promise": "^1.0.1",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.14",
     "yargs": "^6.3.0"
