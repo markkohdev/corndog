@@ -90,6 +90,7 @@ export function redirectToFeatures() {
 
 export const actions = {
   calledApi,
+  fetchFeatures,
   redirectToFeatures
 }
 
