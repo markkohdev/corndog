@@ -97,20 +97,22 @@ export function extractMinMax(tracks, features) {
     let maxTrack = tracks[0];
 
     // Iterate through each feature row and record the index of the min and max
-    features.forEach(function(featureRow) {
+    for(let j=0; j < features.length; j++) {
+      const featureRow = features[j];
+
       // Get the current feature value from the row
       const featureValue = featureRow[i];
 
       // Compare and update min and max accordingly
       if (featureValue < min) {
         min = featureValue;
-        minTrack = tracks[i];
+        minTrack = tracks[j];
       }
       if (featureValue > max) {
         max = featureValue;
-        maxTrack = tracks[i];
+        maxTrack = tracks[j];
       }
-    });
+    }
 
     // Build our MinMax object
     const minMaxObject = {
