@@ -13,7 +13,7 @@ export default class FetchView extends Component {
       calledApi(offset, songList, total);
     } else if (features.length < total) {
       fetchFeatures(songList);
-    } else if (minMax.length < total) {
+    } else if (Object.keys(minMax).length < total) {
       extractMinMax(songList, features);
     } else {
       console.log('minmax', minMax);

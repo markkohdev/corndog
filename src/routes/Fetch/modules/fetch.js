@@ -100,8 +100,9 @@ export function fetchFeatures(tracks) {
 }
 
 export function extractMinMax(tracks, features) {
+  console.log('inhere');
   const featureMinMaxMap = {};
-
+debugger
   for(let i=0; i < FEATURES.length; i++){
     const feature = FEATURES[i];
     // Initialize the min max to the first value for this feature
@@ -136,6 +137,8 @@ export function extractMinMax(tracks, features) {
     // Add the object to the minmax map
     featureMinMaxMap[feature] = minMaxObject;
   }
+
+  console.log('inthejawn', featureMinMaxMap);
 
   // Return the map
   return {
