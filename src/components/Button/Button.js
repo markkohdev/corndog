@@ -8,10 +8,10 @@ export default class Button extends React.Component {
   };
 
   render() {
-    const { onClick, buttonName } = this.props;
+    const { onClick, buttonName, className } = this.props;
 
     return (
-      <button className="cd-button" onClick={onClick}>
+      <button className={`cd-button ${className}`} onClick={onClick}>
         {buttonName}
       </button>
     );

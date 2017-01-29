@@ -1,0 +1,12 @@
+.allFeatures {
+  margin: 0 auto;
+  width: 90%;
+}
+
+.features {
+  display: none;
+
+  &--active {
+    display: block;
+  }
+}

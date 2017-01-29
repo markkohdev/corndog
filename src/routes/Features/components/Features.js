@@ -1,35 +1,54 @@
 import React, { Component } from 'react'
 import Button from '../../../components/Button'
+import Slider, { Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import './Features.scss';
 
 export default class FeatureView extends Component {
-  componentDidMount() {
-    const {calledApi, feature: { offset, songList, total }} = this.props;
-    calledApi(offset, songList, total);
+  handleSliderChange = (newValue, feature) => {
+    console.log(newValue, feature);
+    const { featureSliderChanged } = this.props;
+    featureSliderChanged(newValue, feature);
   }
 
-  componentDidUpdate() {
-    const {calledApi, featureFeatures, feature: { offset, songList, features, total }} = this.props;
-    console.log('view', songList.length, total);
-    if (songList.length < total) {
-      calledApi(offset, songList, total);
-    } else if (features.length < total) {
-      featureFeatures(songList);
-    }
+  goToNextFeature = () => {
+    const { navigatedToNextFeature, features: {allFeatures, currentFeatureIndex} } = this.props;
+    navigatedToNextFeature();
+  }
+
+  goToPrevFeature = () => {
+    const { navigatedToPrevFeature } = this.props;
+    navigatedToPrevFeature();
   }
 
   render() {
-    const { redirectToFeatures } = this.props;
+    const { features: { allFeatures, currentFeatureIndex}} = this.props;
+    const allFeatureKeys = Object.keys(allFeatures);
+    console.log(this.props);
     return (
-      <div className="home">
-        <div className="home__container text--center">
-          <h1 className="text--green">Corndog Playlist Generator</h1>
-          <h2 className="text--white">Generate the playlist of your life by customizing settings and all the junk! All you have to do is log in to your Spotify account.</h2>
-          <Button
-            onClick={redirectToFeatures}
-            className="cd-button--green"
-            buttonName="Log in to Spotify"
-          />
-        </div>
+      <div className="allFeatures">
+      { 
+        allFeatureKeys.map((feature, index) => {
+          const featureValue = allFeatures[feature];
+          const currentFeature = allFeatureKeys[currentFeatureIndex];
+          console.log(currentFeatureIndex,currentFeature, feature);
+          const activeClass = currentFeature === feature ? 'features--active' : "";
+          return (
+            <div className={`features ${activeClass}`} key={index}>
+              <div className="features__container text--center">
+                <h1 className="text--green">{feature}</h1>
+                <Slider
+                  defaultValue={50}
+                  value={featureValue}
+                  onChange={(newValue) => this.handleSliderChange(newValue, feature)}
+                />
+              </div>
+            </div>
+          )
+        })
+      }
+      { currentFeatureIndex > 0 ? <Button className="cd-button cd-button--green" buttonName="previous" onClick={this.goToPrevFeature}/> : null }
+      { currentFeatureIndex < allFeatureKeys.length - 1 ? <Button className="cd-button cd-button--green" buttonName="next" onClick={this.goToNextFeature}/> : null }
       </div>
     )
   }
