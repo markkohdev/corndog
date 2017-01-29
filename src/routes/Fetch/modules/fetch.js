@@ -1,70 +1,37 @@
+import { browserHistory } from 'react-router'
 import cookie from 'react-cookie';
 const SpotifyWebApi = require('spotify-web-api-js');
 
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const COUNTER_INCREMENT = 'COUNTER_INCREMENT'
-export const COUNTER_DOUBLE_ASYNC = 'COUNTER_DOUBLE_ASYNC'
 export const FETCH_API_CALLED = 'FETCH_API_CALLED'
 export const FETCH_FEATURES_CALLED = 'FETCH_FEATURES_CALLED'
+export const FETCH = 'FETCH_MATRIX_STORED'
+export const REDIRECT_TO_FEATURES = 'REDIRECT_TO_FEATURES'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-
-// function getAllTracks(spotify, tracks) {
-//   // Get the first set of tracks so we can get the total\
-//   return spotify.getMySavedTracks({offset: tracks.length}).then(function(data) {
-//     // Update the total number of tracks (for pagination purposes)
-//     total = data.total;
-//     data.items.forEach(function(item) {
-//       tracks.push(item.track);
-//     });
-
-//     if (tracks.length < total) {
-//       return Promise.all([data, getAllTracks(spotify, tracks)]);
-//     }
-//     else {
-//       return tracks
-//     }
-//   }, function(err) {
-//     consol.log(err);
-//   })
-// }
-
-export function calledApi(){
+export function calledApi(offset, songList = [], total) {
   return (dispatch, getState) => {
-    return new Promise((listCompleteResolve) => {
-      // Initialize the spotify API and set our access token
-      const spotify = new SpotifyWebApi();
-      const access_token = cookie.load('spotify_access_token');
-      spotify.setAccessToken(access_token);
-
-      const tracks = [];
-      let total = 1;
-      // Get the first set of tracks so we can get the total\
-      spotify.getMySavedTracks({offset: tracks.length}).then(function(data) {
-        // Update the total number of tracks (for pagination purposes)
-        total = data.total;
-        data.items.forEach(function(item) {
-          tracks.push(item.track);
-        });
-
-        fetchFeatures(spotify, tracks).then(function(features) {
-          dispatch({
-            type: FETCH_API_CALLED,
-            payload: tracks
-          })
-          listCompleteResolve()
-        }, function(err) {
-          console.log(err)
-        })
-      }, function(err) {
-        console.log(err);
-        listCompleteResolve()
+    const spotify = new SpotifyWebApi();
+    const access_token = cookie.load('spotify_access_token');
+    spotify.setAccessToken(access_token);
+    // Get the first set of tracks so we can get the total
+    spotify.getMySavedTracks({offset}).then(function(data) {
+      // Update the total number of tracks (for pagination purposes)
+      console.log(data);
+      const total = data.total;
+      const tracks = data.items;
+      dispatch({
+        type: FETCH_API_CALLED,
+        payload: {
+          tracks,
+          total
+        }
       })
-    })
+    });
   }
 }
 
@@ -99,56 +66,44 @@ function fetchFeatures(spotify, tracks) {
   })
 }
 
-export function increment (value = 1) {
-  // Hit SP API
+export function redirectToFeatures() {
+  browserHistory.push('/')
 
-  // Return
   return {
-    type    : COUNTER_INCREMENT,
-    payload : value
+    type: REDIRECT_TO_FEATURES
   }
 }
 
-/*  This is a thunk, meaning it is a function that immediately
-    returns a function for lazy evaluation. It is incredibly useful for
-    creating async actions, especially when combined with redux-thunk! */
-
-    export const doubleAsync = () => {
-      return (dispatch, getState) => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            dispatch({
-              type    : COUNTER_DOUBLE_ASYNC,
-              payload : getState().fetch
-            })
-            resolve()
-          }, 200)
-        })
-      }
-    }
-
-    export const actions = {
-      increment,
-      doubleAsync,
-      calledApi
-    }
+export const actions = {
+  calledApi,
+  redirectToFeatures
+}
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [COUNTER_INCREMENT]    : (state, action) => state + action.payload,
-  [COUNTER_DOUBLE_ASYNC] : (state, action) => state * 2,
-  [FETCH_API_CALLED] : (state, action) => { return {...state, songList:action.payload}},
-  [FETCH_FEATURES_CALLED] : (state, action) => { return {...state, songFeatures:action.payload}}
+  [FETCH_API_CALLED] : (state, action) => {
+    let { offset, songList } = state;
+    const { total, tracks } = action.payload;
+    const newSonglist = songList.slice(0).concat(tracks);
+    const newOffset = offset += 20;
+    return {
+      ...state,
+      songList: newSonglist,
+      offset: newOffset,
+      total
+    }
+  }
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 const initialState = {
-  songFeatures: [],
-  songList: []
+  songList: [],
+  offset: 0,
+  total: null
 }
 export default function fetchReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
