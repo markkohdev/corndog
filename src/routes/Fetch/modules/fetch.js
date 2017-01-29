@@ -21,7 +21,6 @@ export function calledApi(offset, songList = [], total) {
     // Get the first set of tracks so we can get the total
     spotify.getMySavedTracks({offset}).then(function(data) {
       // Update the total number of tracks (for pagination purposes)
-      console.log(data);
       const total = data.total;
       const tracks = data.items;
       dispatch({
@@ -87,7 +86,7 @@ const ACTION_HANDLERS = {
     let { offset, songList } = state;
     const { total, tracks } = action.payload;
     const newSonglist = songList.slice(0).concat(tracks);
-    const newOffset = offset += 20;
+    const newOffset = newSonglist.length;
     return {
       ...state,
       songList: newSonglist,
