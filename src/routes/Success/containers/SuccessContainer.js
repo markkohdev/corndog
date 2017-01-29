@@ -1,32 +1,39 @@
 import { connect } from 'react-redux'
-import { generatePlaylist } from '../modules/generate-playlist'
+import * as actions from '../modules/successState'
+import {find} from 'lodash'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
     wiring in the actions and state necessary to render a presentational
-    component - in this case, the GeneratePlaylist:   */
+    component - in this case, the success:   */
 
-import GeneratePlaylist from '../components/GeneratePlaylist'
+import Feature from '../components/Success'
 
 /*  Object of action creators (can also be function that returns object).
     Keys will be passed as props to presentational components. Here we are
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  generatePlaylist
+  ...actions
+}
+
+const getCurrentFeatureSong = (songSuccess, successType) => {
+  console.log('success', songSuccess, {successType});
+  console.log(find(songSuccess, {successType}));
 }
 
 const mapStateToProps = (state) => ({
-  GeneratePlaylist : state.GeneratePlaylist
+  success : state.success,
+  fetch: state.fetch
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
 
     import { createSelector } from 'reselect'
-    const GeneratePlaylist = (state) => state.GeneratePlaylist
-    const tripleCount = createSelector(GeneratePlaylist, (count) => count * 3)
+    const success = (state) => state.success
+    const tripleCount = createSelector(success, (count) => count * 3)
     const mapStateToProps = (state) => ({
-      GeneratePlaylist: tripleCount(state)
+      success: tripleCount(state)
     })
 
     Selectors can compute derived data, allowing Redux to store the minimal possible state.
@@ -34,4 +41,4 @@ const mapStateToProps = (state) => ({
     Selectors are composable. They can be used as input to other selectors.
     https://github.com/reactjs/reselect    */
 
-export default connect(mapStateToProps, mapDispatchToProps)(GeneratePlaylist)
+export default connect(mapStateToProps, mapDispatchToProps)(Feature)

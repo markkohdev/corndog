@@ -71,7 +71,7 @@ export function redirectToFeatures() {
 }
 
 export const actions = {
-  calledApi,
+  generatePlaylist,
   fetchFeatures,
   redirectToFeatures
 }

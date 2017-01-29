@@ -12,13 +12,13 @@ export const FEATURES_GENERATE_PLAYLISTS = "FEATURES_GENERATE_PLAYLISTS";
 // Actions
 // ------------------------------------
 
-export function featureSliderChanged(value, featureType) {
+export function successSliderChanged(value, successType) {
   return (dispatch, getState) => {
     dispatch({
       type: FEATURES_SLIDER_CHANGED,
       payload: {
         value,
-        featureType
+        successType
       }
     });
   }
@@ -47,7 +47,7 @@ export function generatePlaylists() {
 }
 
 export const actions = {
-  featureSliderChanged,
+  successSliderChanged,
   navigatedToNextFeature
 }
 
@@ -56,34 +56,34 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [FEATURES_SLIDER_CHANGED] : (state, action) => {
-    const { featureType, value } = action.payload;
+    const { successType, value } = action.payload;
     return {
       ...state,
-      allFeatures: {
-        ...state.allFeatures,
-        [featureType]: value
+      allSuccess: {
+        ...state.allSuccess,
+        [successType]: value
       }
     }
   },
   [FEATURES_GO_NEXT_FEATURE] : (state, action) => {
-    const { currentFeatureIndex, allFeatures} = state;
+    const { currentFeatureIndex, allSuccess} = state;
     const nextIndex = state.currentFeatureIndex + 1;
     return {
       ...state,
       currentFeatureIndex: nextIndex,
       currentFeature: {
-        type: allFeatures[nextIndex]
+        type: allSuccess[nextIndex]
       }
     }
   },
   [FEATURES_GO_PREV_FEATURE] : (state, action) => {
-    const { currentFeatureIndex, allFeatures} = state;
+    const { currentFeatureIndex, allSuccess} = state;
     const nextIndex = state.currentFeatureIndex - 1;
     return {
       ...state,
       currentFeatureIndex: nextIndex,
       currentFeature: {
-        type: allFeatures[nextIndex]
+        type: allSuccess[nextIndex]
       }
     }
   }
@@ -93,7 +93,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  allFeatures: {
+  allSuccess: {
     'danceability': 50,
     'energy': 50,
     'liveness': 50,
@@ -103,7 +103,7 @@ const initialState = {
   },
   currentFeatureIndex: 0
 }
-export default function featureReducer (state = initialState, action) {
+export default function successReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
   return handler ? handler(state, action) : state;
 }
