@@ -8,9 +8,12 @@ export default class FetchView extends Component {
   }
 
   componentDidUpdate() {
-    const {calledApi, fetch: { offset, songList, total }} = this.props;
+    const {calledApi, fetchFeatures, fetch: { offset, songList, features, total }} = this.props;
+    console.log('view', songList.length, total);
     if (songList.length < total) {
       calledApi(offset, songList, total);
+    } else if (features.length < total) {
+      fetchFeatures(songList);
     }
   }
 
