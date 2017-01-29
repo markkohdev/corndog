@@ -127,11 +127,27 @@ export function extractMinMax(tracks, features) {
     featureMinMaxMap[feature] = minMaxObject;
   }
 
+  // Alright, we've found the max and min for each jawn, scale the vectors
+  for (let i=0; i<FEATURES.length; i++) {
+    const featureKey = FEATURES[i];
+    const featureMin = featureMinMaxMap[featureKey].min
+    const featureMax = featureMinMaxMap[featureKey].max
+    const scaleRange = featureMax - featureMin;
+
+    for (let j=0; j<features.length; j++) {
+      let scaledFeatureValue = features[j][i];
+      scaledFeatureValue -= featureMin;
+      scaledFeatureValue = scaledFeatureValue/scaleRange;
+      features[j][i] = scaledFeatureValue;
+    }
+  }
+
   // Return the map
   return {
     type: FETCH_MIN_MAX,
     payload: {
-      featureMinMaxMap
+      featureMinMaxMap,
+      features
     }
   }
 }
@@ -177,10 +193,11 @@ const ACTION_HANDLERS = {
     }
   },
   [FETCH_MIN_MAX] : (state, action) => {
-    const { featureMinMaxMap } = action.payload;
+    const { featureMinMaxMap, features } = action.payload;
     return {
       ...state,
-      minMax: featureMinMaxMap
+      minMax: featureMinMaxMap,
+      features
     }
   }
 }
