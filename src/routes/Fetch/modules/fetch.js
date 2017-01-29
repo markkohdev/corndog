@@ -32,8 +32,9 @@ export function getFeaturesForTrack(track) {
   const feature_values = [];
   FEATURES.forEach((feature_key) => {
     const feature_value = track[feature_key];
-    feature_values.push(feature_key);
+    feature_values.push(feature_value);
   });
+  return feature_values;
 }
 
 
@@ -102,12 +103,14 @@ export function fetchFeatures(tracks) {
 export function extractMinMax(tracks, features) {
   console.log('inhere');
   const featureMinMaxMap = {};
-debugger
+
   for(let i=0; i < FEATURES.length; i++){
     const feature = FEATURES[i];
     // Initialize the min max to the first value for this feature
-    let min = max = features[0][i];
-    let minTrack = maxTrack = tracks[0];
+    let min = features[0][i];
+    let max = features[0][i];
+    let minTrack = tracks[0];
+    let maxTrack = tracks[0];
 
     // Iterate through each feature row and record the index of the min and max
     features.forEach(function(featureRow) {
@@ -143,7 +146,9 @@ debugger
   // Return the map
   return {
     type: FETCH_MIN_MAX,
-    payload: featureMinMaxMap
+    payload: {
+      featureMinMaxMap
+    }
   }
 }
 
@@ -186,10 +191,11 @@ const ACTION_HANDLERS = {
     }
   },
   [FETCH_MIN_MAX] : (state, action) => {
-    const { minMax } = action.payload;
+    const { featureMinMaxMap } = action.payload;
+    console.log('handler', featureMinMaxMap);
     return {
       ...state,
-      minMax
+      minMax: featureMinMaxMap
     }
   }
 }
@@ -202,7 +208,8 @@ const initialState = {
   offset: 0,
   total: 0,
   features: [],
-  minMax: {}
+  minMax: {},
+  FEATURES
 }
 export default function fetchReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
