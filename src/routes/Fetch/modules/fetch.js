@@ -7,7 +7,7 @@ const SpotifyWebApi = require('spotify-web-api-js');
 // ------------------------------------
 export const FETCH_API_CALLED = 'FETCH_API_CALLED'
 export const FETCH_FEATURES_CALLED = 'FETCH_FEATURES_CALLED'
-export const FETCH = 'FETCH_MATRIX_STORED'
+export const FETCH_MIN_MAX = 'FETCH_MIN_MAX'
 export const REDIRECT_TO_FEATURES = 'REDIRECT_TO_FEATURES'
 
 export const FEATURES = [
@@ -56,10 +56,6 @@ export function calledApi(offset, songList = [], total) {
   }
 }
 
-function getAudioFeatures(spotify, ids) {
-  let featuresPromise = spotify.getAudioFeaturesForTracks(ids);
-}
-
 export function fetchFeatures(tracks) {
   return (dispatch, getState) => {
     return new Promise((listCompleteResolve) => {
@@ -103,6 +99,51 @@ export function fetchFeatures(tracks) {
   }
 }
 
+export function extractMinMax(tracks, features) {
+  const featureMinMaxMap = {};
+
+  for(let i=0; i < FEATURES.length; i++){
+    const feature = FEATURES[i];
+    // Initialize the min max to the first value for this feature
+    let min = max = features[0][i];
+    let minTrack = maxTrack = tracks[0];
+
+    // Iterate through each feature row and record the index of the min and max
+    features.forEach(function(featureRow) {
+      // Get the current feature value from the row
+      const featureValue = featureRow[i];
+
+      // Compare and update min and max accordingly
+      if (featureValue < min) {
+        min = featureValue;
+        minTrack = tracks[i];
+      }
+      if (featureValue > max) {
+        max = featureValue;
+        maxTrack = tracks[i];
+      }
+    });
+
+    // Build our MinMax object
+    const minMaxObject = {
+      feature: feature,
+      min: min,
+      minTrack: minTrack,
+      max: max,
+      maxTrack: maxTrack
+    };
+
+    // Add the object to the minmax map
+    featureMinMaxMap[feature] = minMaxObject;
+  }
+
+  // Return the map
+  return {
+    type: FETCH_MIN_MAX,
+    payload: featureMinMaxMap
+  }
+}
+
 export function redirectToFeatures() {
   browserHistory.push('/features')
 
@@ -114,7 +155,8 @@ export function redirectToFeatures() {
 export const actions = {
   calledApi,
   fetchFeatures,
-  redirectToFeatures
+  redirectToFeatures,
+  extractMinMax
 }
 
 // ------------------------------------
@@ -126,7 +168,6 @@ const ACTION_HANDLERS = {
     const { total, tracks } = action.payload;
     const newSonglist = songList.slice(0).concat(tracks);
     const newOffset = newSonglist.length;
-    console.log(newOffset, newSonglist);
     return {
       ...state,
       songList: newSonglist,
@@ -136,10 +177,16 @@ const ACTION_HANDLERS = {
   },
   [FETCH_FEATURES_CALLED] : (state, action) => {
     const { features } = action.payload;
-    console.log('action total', state.total);
     return {
       ...state,
       features
+    }
+  },
+  [FETCH_MIN_MAX] : (state, action) => {
+    const { minMax } = action.payload;
+    return {
+      ...state,
+      minMax
     }
   }
 }
@@ -151,7 +198,8 @@ const initialState = {
   songList: [],
   offset: 0,
   total: 0,
-  features: []
+  features: [],
+  minMax: {}
 }
 export default function fetchReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
