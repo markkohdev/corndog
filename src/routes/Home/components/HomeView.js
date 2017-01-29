@@ -13,7 +13,7 @@ export default class HomeView extends Component {
         <div className="home__container text--center">
           <div className="home__title">
             <h1 className="text--green">Corndog Playlist Generator</h1>
-            <h2 className="text--white">Generate the playlist of your life by customizing settings and all the junk! All you have to do is log in to your Spotify account.</h2>
+            <h3 className="text--white">Generate the playlist of your life by customizing settings and all the junk! All you have to do is log in to your Spotify account.</h3>
           </div>
           <Button
             onClick={this.authenticatedUser}
