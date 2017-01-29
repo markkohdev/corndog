@@ -37,7 +37,7 @@ export function calledApi(offset, songList = [], total) {
   }
 }
 
-export function fetchFeatures(tracks) {
+export function featureFeatures(tracks) {
   return (dispatch, getState) => {
     return new Promise((listCompleteResolve) => {
       let features = [];
@@ -129,7 +129,7 @@ const initialState = {
   total: 0,
   features: []
 }
-export default function fetchReducer (state = initialState, action) {
+export default function featureReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
   return handler ? handler(state, action) : state;
 }

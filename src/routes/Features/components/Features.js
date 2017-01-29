@@ -1,21 +1,19 @@
 import React, { Component } from 'react'
 import Button from '../../../components/Button'
 
-export default class FetchView extends Component {
+export default class FeatureView extends Component {
   componentDidMount() {
-    const {calledApi, fetch: { offset, songList, total }} = this.props;
+    const {calledApi, feature: { offset, songList, total }} = this.props;
     calledApi(offset, songList, total);
   }
 
   componentDidUpdate() {
-    const {calledApi, fetchFeatures, redirectToFeatures, fetch: { offset, songList, features, total }} = this.props;
+    const {calledApi, featureFeatures, feature: { offset, songList, features, total }} = this.props;
     console.log('view', songList.length, total);
     if (songList.length < total) {
       calledApi(offset, songList, total);
     } else if (features.length < total) {
-      fetchFeatures(songList);
-    } else {
-      redirectToFeatures();
+      featureFeatures(songList);
     }
   }
 
