@@ -8,12 +8,13 @@ export default class FetchView extends Component {
   }
 
   componentDidUpdate() {
-    const {calledApi, fetchFeatures, redirectToFeatures, extractMinMax, fetch: { offset, songList, features, total, minMax }} = this.props;
+    const {calledApi, fetchFeatures, redirectToFeatures, extractMinMax, fetch: { FEATURES, offset, songList, features, total, minMax }} = this.props;
+    console.log('props', this.props.fetch);
     if (songList.length < total) {
       calledApi(offset, songList, total);
     } else if (features.length < total) {
       fetchFeatures(songList);
-    } else if (Object.keys(minMax).length < total) {
+    } else if (Object.keys(minMax).length < FEATURES.length) {
       extractMinMax(songList, features);
     } else {
       console.log('minmax', minMax);
