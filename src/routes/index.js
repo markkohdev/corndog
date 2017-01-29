@@ -4,6 +4,7 @@ import Home from './Home'
 import CounterRoute from './Counter'
 import FetchRoute from './Fetch'
 import FeaturesRoute from './Features'
+import SuccessRoute from './Success'
 import GeneratePlaylist from './GeneratePlaylist'
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -17,7 +18,8 @@ export const createRoutes = (store) => ({
     CounterRoute(store),
     FetchRoute(store),
     FeaturesRoute(store),
-    GeneratePlaylist(store)
+    GeneratePlaylist(store),
+    SuccessRoute(store)
   ]
 })
 
