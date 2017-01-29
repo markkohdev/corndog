@@ -95,9 +95,9 @@ const ACTION_HANDLERS = {
 const initialState = {
   allFeatures: {
     'danceability': 50,
-    'energy': 50,
     'liveness': 50,
     'acousticness': 50,
+    'instrumentalness': 50,
     'speechiness': 50,
     'valence': 50
   },

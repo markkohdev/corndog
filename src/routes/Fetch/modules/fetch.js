@@ -11,12 +11,12 @@ export const FETCH_MIN_MAX = 'FETCH_MIN_MAX'
 export const REDIRECT_TO_FEATURES = 'REDIRECT_TO_FEATURES'
 
 export const FEATURES = [
-'acousticness',
-'danceability',
-'energy',
-'instrumentalness',
-'speechiness',
-'valance'
+  'acousticness',
+  'danceability',
+  'instrumentalness',
+  'liveness',
+  'speechiness',
+  'valence'
 ];
 
 // Setup the Spotify client
@@ -127,8 +127,6 @@ export function extractMinMax(tracks, features) {
     featureMinMaxMap[feature] = minMaxObject;
   }
 
-  console.log('inthejawn', featureMinMaxMap);
-
   // Return the map
   return {
     type: FETCH_MIN_MAX,
@@ -180,7 +178,6 @@ const ACTION_HANDLERS = {
   },
   [FETCH_MIN_MAX] : (state, action) => {
     const { featureMinMaxMap } = action.payload;
-    console.log('handler', featureMinMaxMap);
     return {
       ...state,
       minMax: featureMinMaxMap
