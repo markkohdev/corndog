@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import Button from '../../../components/Button'
 
-export default class FetchView extends Component {
+export default class GeneratePlaylistView extends Component {
   componentDidMount() {
-    const {calledApi, fetch: { offset, songList, total }} = this.props;
+    const {calledApi, generate: { offset, songList, total }} = this.props;
     calledApi(offset, songList, total);
   }
 
   componentDidUpdate() {
-    const {calledApi, fetchFeatures, redirectToFeatures, fetch: { offset, songList, features, total }} = this.props;
+    const {calledApi, fetchFeatures, redirectToFeatures, GeneratePlaylist: { offset, songList, features, total }} = this.props;
     console.log('view', songList.length, total);
     if (songList.length < total) {
       calledApi(offset, songList, total);
@@ -20,11 +20,12 @@ export default class FetchView extends Component {
   }
 
   render() {
-    const { redirectToFeatures, fetch: { total } } = this.props;
+    const { redirectToFeatures, GeneratePlaylist: { total } } = this.props;
     return (
       <div className="home">
         <div className="home__container text--center">
-          <h1 className="text--green">Hold up, we're gonna go do some math with your { total > 0 ? total : ''}  saved tracks...</h1>
+          <h1 className="text--green">Fryin' up some corn dogs</h1>
+          <img src='https://media.giphy.com/media/3oEjHGIMl0qrDHamqs/giphy.gif' alt='korn'/>
         </div>
       </div>
     )

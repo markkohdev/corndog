@@ -7,57 +7,16 @@ const SpotifyWebApi = require('spotify-web-api-js');
 // ------------------------------------
 export const FETCH_API_CALLED = 'FETCH_API_CALLED'
 export const FETCH_FEATURES_CALLED = 'FETCH_FEATURES_CALLED'
-export const FETCH = 'FETCH_MATRIX_STORED'
+export const GeneratePlaylist = 'FETCH_MATRIX_STORED'
 export const REDIRECT_TO_FEATURES = 'REDIRECT_TO_FEATURES'
-
-export const FEATURES = [
-'acousticness',
-'danceability',
-'energy',
-'instrumentalness',
-'speechiness',
-'valance'
-];
-
-// Setup the Spotify client
-const spotify = new SpotifyWebApi();
-const access_token = cookie.load('spotify_access_token');
-spotify.setAccessToken(access_token);
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 
-export function getFeaturesForTrack(track) {
-  const feature_values = [];
-  FEATURES.forEach((feature_key) => {
-    const feature_value = track[feature_key];
-    feature_values.push(feature_key);
-  });
-}
-
-
-export function calledApi(offset, songList = [], total) {
-  return (dispatch, getState) => {
-    // Get the first set of tracks so we can get the total
-    spotify.getMySavedTracks({offset}).then(function(data) {
-      // Update the total number of tracks (for pagination purposes)
-      const total = data.total;
-      const tracks = data.items.map((item) => item.track);
-      console.log(tracks);
-      dispatch({
-        type: FETCH_API_CALLED,
-        payload: {
-          tracks,
-          total
-        }
-      });
-    });
-  }
-}
-
-function getAudioFeatures(spotify, ids) {
-  let featuresPromise = spotify.getAudioFeaturesForTracks(ids);
+export function generatePlaylist(songList, features) {
+  console.log('Songz: ', songList);
+  console.log('Features: ', features);
 }
 
 export function fetchFeatures(tracks) {
@@ -84,9 +43,9 @@ export function fetchFeatures(tracks) {
         const features = [];
 
         results.forEach(function(result) {
-          result.audio_features.forEach(function(track_features) {
-            const extractedFeatures = getFeaturesForTrack(track_features);
-            features.push(extractedFeatures);
+          // console.log(result);
+          result.audio_features.forEach(function(feature) {
+            features.push(feature);
           });
         });
 
