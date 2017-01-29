@@ -91,7 +91,7 @@ export function generatePlaylist(similarities) {
 
       const userId = me.id;
 
-      spotify.createPlaylist(userId, {name: 'Corndog'}).then(function(playlistInfo) {
+      spotify.createPlaylist(userId, {name: 'corndog'}).then(function(playlistInfo) {
         console.log(playlistInfo);
 
         const playlistId = playlistInfo.id;

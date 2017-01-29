@@ -107,10 +107,12 @@ export function extractMinMax(tracks, features) {
       if (featureValue < min) {
         min = featureValue;
         minTrack = tracks[j];
+        // console.log('Updating min ' + feature, minTrack.name, min)
       }
       if (featureValue > max) {
         max = featureValue;
         maxTrack = tracks[j];
+        // console.log('Updating max ' + feature, maxTrack.name, max)
       }
     }
 
