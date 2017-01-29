@@ -10,7 +10,7 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const Feature = require('./containers/FeaturesContainer').default
-      const reducer = require('./modules/features').default
+      const reducer = require('./modules/featuresState').default
 
       /*  Add the reducer to the store on key 'feature'  */
       injectReducer(store, { key: 'features', reducer })

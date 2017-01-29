@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
-import { calledApi, redirectToFeatures, featureFeatures } from '../modules/features'
+import * as actions from '../modules/featuresState'
+import {find} from 'lodash'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -13,13 +14,17 @@ import Feature from '../components/Features'
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  calledApi,
-  redirectToFeatures,
-  featureFeatures
+  ...actions
+}
+
+const getCurrentFeatureSong = (songFeatures, featureType) => {
+  console.log('features', songFeatures, {featureType});
+  console.log(find(songFeatures, {featureType}));
 }
 
 const mapStateToProps = (state) => ({
-  feature : state.feature
+  features : state.features,
+  fetch: state.fetch
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
