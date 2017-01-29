@@ -32,7 +32,7 @@ export default class FeatureView extends Component {
     console.log(this.props);
     return (
       <div className="allSuccess">
-        <iframe src="https://embed.spotify.com/?uri=spotify:user:jztaddwater:playlist:2yEH4RJuhGJK56s6zVlwhQ" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+        <iframe src="https://embed.spotify.com/?uri=spotify:user:jztaddwater:playlist:2yEH4RJuhGJK56s6zVlwhQ" width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
       </div>
     )
   }
