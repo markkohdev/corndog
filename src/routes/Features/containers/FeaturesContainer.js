@@ -17,11 +17,6 @@ const mapDispatchToProps = {
   ...actions
 }
 
-const getCurrentFeatureSong = (songFeatures, featureType) => {
-  console.log('features', songFeatures, {featureType});
-  console.log(find(songFeatures, {featureType}));
-}
-
 const mapStateToProps = (state) => ({
   features : state.features,
   fetch: state.fetch

@@ -24,7 +24,8 @@ const getCurrentFeatureSong = (songSuccess, successType) => {
 
 const mapStateToProps = (state) => ({
   success : state.success,
-  fetch: state.fetch
+  fetch: state.fetch,
+  generate: state.generate
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

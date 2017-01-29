@@ -6,7 +6,7 @@ import './Success.scss';
 
 export default class FeatureView extends Component {
   render() {
-    const { success: { allSuccess, currentFeatureIndex}} = this.props;
+    const { success: { allSuccess, currentFeatureIndex}, generate: {playlistUri}} = this.props;
     const allFeatureKeys = Object.keys(allSuccess);
     const btnName = currentFeatureIndex < allFeatureKeys.length - 1 ? "next" : "submit";
     return (
@@ -18,7 +18,7 @@ export default class FeatureView extends Component {
           </div>
           <div>
             <div className="allSuccess__playlist">
-              <iframe src="https://embed.spotify.com/?uri=spotify:user:jztaddwater:playlist:2yEH4RJuhGJK56s6zVlwhQ" width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
+              <iframe src={`https://embed.spotify.com/?uri=${playlistUri}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
             </div>
             <Button className="cd-button--filled" buttonName="Make another playlist" onClick={() => {}}/>
           </div>

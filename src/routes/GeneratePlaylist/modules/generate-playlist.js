@@ -51,7 +51,6 @@ export function generateSimilarities(allFeatures, songList, features, minMax, FE
     similarities.push(similarityObject);
   }
 
-  console.log('SIMS', similarities);
 
   return {
     type: GENERATE_SIMILARITIES,
@@ -77,7 +76,6 @@ export function generatePlaylist(similarities) {
     // Sort tracks by similarity
     similarities.sort(compareTrack);
 
-    console.log('Sorted:', similarities);
 
     // Get the first 30 tracks
     const first30 = similarities.slice(0,30);
