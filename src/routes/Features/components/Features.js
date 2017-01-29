@@ -28,7 +28,6 @@ export default class FeatureView extends Component {
     const { goToIndex, features: { allFeatures, currentFeatureIndex}, fetch: { minMax }} = this.props;
     const allFeatureKeys = Object.keys(allFeatures);
     const btnName = currentFeatureIndex < allFeatureKeys.length - 1 ? "next" : "submit";
-    console.log(this.props);
     const submitClass = (currentFeatureIndex >= allFeatureKeys.length - 1) ? 'cd-button--filled' : "";
     return (
       <div className="featuresView">
@@ -36,7 +35,6 @@ export default class FeatureView extends Component {
           {allFeatureKeys.map((feature, index) => {
             const featureValue = allFeatures[feature];
             const currentFeature = allFeatureKeys[currentFeatureIndex];
-            console.log(currentFeatureIndex,currentFeature, feature);
             const activeClass = currentFeature === feature ? 'features-nav--active' : "";
             const minUri = minMax[feature].minTrack.uri;
             const maxUri = minMax[feature].maxTrack.uri;
@@ -52,24 +50,28 @@ export default class FeatureView extends Component {
           <div className="allFeatures__contain">
           {
             allFeatureKeys.map((feature, index) => {
-              const featureValue = allFeatures[feature];
+              const featureValue = allFeatures[feature].value;
+              const featureDescription = allFeatures[feature].description;
               const currentFeature = allFeatureKeys[currentFeatureIndex];
-              console.log(currentFeatureIndex,currentFeature, feature);
-              const activeClass = currentFeature === feature ? 'features--active' : "";
+              const isActive = currentFeature === feature;
+              const valueDiff = isActive && featureValue !== 50 ? (Math.abs(Math.ceil(50 - featureValue))/50*0.3) + 1 : 1;
+              console.log('valDiff', valueDiff);
+              console.log('featureValue', featureValue);
+              const activeClass = isActive ? 'features--active' : "";
               const minUri = minMax[feature].minTrack.uri;
               const maxUri = minMax[feature].maxTrack.uri;
               return (
                 <div className={`features ${activeClass}`} key={index}>
                   <div className="features__container text--center">
                     <h1 className="text--green">{feature}</h1>
-                    <p>Choose how much mustard you want on your corndog</p>
+                    <p><em>[.noun]</em> {featureDescription}</p>
                     <div className="slider-container">
                       <div className="flexbox flexbox--vcenter flexbox--space-between">
-                        <div>
+                        <div className="slider__minMax" style={isActive && featureValue < 50 ? {transform: `scale(${valueDiff})`, opacity: 1} : {}}>
                           <h4>Least</h4>
                           <iframe src={`https://embed.spotify.com/?uri=${minUri}`} width="250" height="80" frameBorder="0" allowTransparency="true"></iframe>
                         </div>
-                        <div>
+                        <div className="slider__minMax" style={isActive && featureValue > 50 ? {transform: `scale(${valueDiff})`, opacity: 1} : {}}>
                           <h4>Most</h4>
                           <iframe src={`https://embed.spotify.com/?uri=${maxUri}`} width="250" height="80" frameBorder="0" allowTransparency="true"></iframe>
                         </div>
@@ -77,6 +79,7 @@ export default class FeatureView extends Component {
                       <Slider
                         defaultValue={50}
                         marks={{0: "least", 100: "most"}}
+                        min={0}
                         value={featureValue}
                         onChange={(newValue) => this.handleSliderChange(newValue, feature)}
                       />

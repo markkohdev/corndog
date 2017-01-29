@@ -71,7 +71,10 @@ const ACTION_HANDLERS = {
       ...state,
       allFeatures: {
         ...state.allFeatures,
-        [featureType]: value
+        [featureType]: {
+          ...state.allFeatures[featureType],
+          value
+        }
       }
     }
   },
@@ -115,12 +118,30 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   allFeatures: {
-    'danceability': 50,
-    'liveness': 50,
-    'acousticness': 50,
-    'instrumentalness': 50,
-    'speechiness': 50,
-    'valence': 50
+    'danceability': {
+      value: 50,
+      description: "the suitability of a track for dancing"
+    },
+    'liveness': {
+      value: 50,
+      description: "the likelihood that the track is live"
+    },
+    'acousticness': {
+      value: 50,
+      description: "the likelihood that the track is acoustic"
+    },
+    'instrumentalness': {
+      value: 50,
+      description: "the likelihood that the track is instrumental"
+    },
+    'speechiness': {
+      value: 50,
+      description: "the likelihood that the track has spoken word"
+    },
+    'valence': {
+      value: 50,
+      description: "the overall positiveness of a track"
+    }
   },
   currentFeatureIndex: 0
 }
