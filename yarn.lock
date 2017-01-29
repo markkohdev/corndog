@@ -1476,7 +1476,7 @@ cookie-signature@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
 
-cookie@0.3.1:
+cookie@0.3.1, cookie@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
 
@@ -4714,6 +4714,13 @@ react-addons-test-utils@^15.0.0:
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.4.1.tgz#1e4caab151bf27cce26df5f9cb714f4fd8359ae1"
 
+react-cookie@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-cookie/-/react-cookie-1.0.4.tgz#4fe715d4c0abbcd18b671df5752c43d3109836c9"
+  dependencies:
+    cookie "^0.3.1"
+    object-assign "^4.1.0"
+
 react-dom@^15.0.0:
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.1.tgz#d54c913261aaedb17adc20410d029dcc18a1344a"
@@ -5353,6 +5360,10 @@ split@0.3:
   resolved "https://registry.yarnpkg.com/split/-/split-0.3.3.tgz#cd0eea5e63a211dfff7eb0f091c4133e2d0dd28f"
   dependencies:
     through "2"
+
+spotify-web-api-js@^0.21.2:
+  version "0.21.2"
+  resolved "https://registry.yarnpkg.com/spotify-web-api-js/-/spotify-web-api-js-0.21.2.tgz#4f9a3bbc97bef84f707a7bfe5f451f9a83d6c4e5"
 
 spotify-web-api-node@^2.3.6:
   version "2.3.6"

@@ -9,7 +9,7 @@ const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:3000/callback';
 const STATE_KEY = 'spotify_auth_state';
 // your application requests authorization
-const scopes = ['user-read-private', 'user-read-email'];
+const scopes = ['user-library-read', 'playlist-modify-public'];
 
 console.log(CLIENT_ID);
 
