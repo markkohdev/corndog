@@ -1,9 +1,10 @@
 @import "variables";
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
 
 html,
 body {
   font-size: 17px;
-  font-family: "Proxima Nova","Helvetica Neue","Helvetica","Arial",sans-serif;
+  font-family: "Proxima Nova", "Roboto", "Helvetica Neue","Helvetica","Arial",sans-serif;
   -webkit-font-smoothing: antialiased;
   font-weight: 500;
   letter-spacing: 0.05em;

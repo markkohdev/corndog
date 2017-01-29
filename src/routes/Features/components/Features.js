@@ -5,7 +5,6 @@ import './Features.scss';
 
 export default class FeatureView extends Component {
   handleSliderChange = (newValue, feature) => {
-    console.log(newValue, feature);
     const { featureSliderChanged } = this.props;
     featureSliderChanged(newValue, feature);
   }
@@ -55,8 +54,6 @@ export default class FeatureView extends Component {
               const currentFeature = allFeatureKeys[currentFeatureIndex];
               const isActive = currentFeature === feature;
               const valueDiff = isActive && featureValue !== 50 ? (Math.abs(Math.ceil(50 - featureValue))/50*0.3) + 1 : 1;
-              console.log('valDiff', valueDiff);
-              console.log('featureValue', featureValue);
               const activeClass = isActive ? 'features--active' : "";
               const minUri = minMax[feature].minTrack.uri;
               const maxUri = minMax[feature].maxTrack.uri;
