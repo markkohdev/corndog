@@ -35,8 +35,6 @@ export default class FeatureView extends Component {
             const featureValue = allFeatures[feature];
             const currentFeature = allFeatureKeys[currentFeatureIndex];
             const activeClass = currentFeature === feature ? 'features-nav--active' : "";
-            const minUri = minMax[feature].minTrack.uri;
-            const maxUri = minMax[feature].maxTrack.uri;
             return (
               <div className={`features-nav ${activeClass}`} key={index} onClick={()=> {goToIndex(index)}}>
                 <span>{index+1}.</span> {feature}
@@ -55,8 +53,11 @@ export default class FeatureView extends Component {
               const isActive = currentFeature === feature;
               const valueDiff = isActive && featureValue !== 50 ? (Math.abs(Math.ceil(50 - featureValue))/50*0.3) + 1 : 1;
               const activeClass = isActive ? 'features--active' : "";
-              const minUri = minMax[feature].minTrack.uri;
-              const maxUri = minMax[feature].maxTrack.uri;
+              const featureMinMax = minMax[feature];
+              const minUri = featureMinMax.minTrack.uri;
+              const maxUri = featureMinMax.maxTrack.uri;
+              const minValue = featureMinMax.min;
+              const maxValue = featureMinMax.max;
               return (
                 <div className={`features ${activeClass}`} key={index}>
                   <div className="features__container text--center">
@@ -67,10 +68,12 @@ export default class FeatureView extends Component {
                         <div className="slider__minMax" style={isActive && featureValue < 50 ? {transform: `scale(${valueDiff})`, opacity: 1} : {}}>
                           <h4>Least</h4>
                           <iframe src={`https://embed.spotify.com/?uri=${minUri}`} width="250" height="80" frameBorder="0" allowTransparency="true"></iframe>
+                          {minValue}
                         </div>
                         <div className="slider__minMax" style={isActive && featureValue > 50 ? {transform: `scale(${valueDiff})`, opacity: 1} : {}}>
                           <h4>Most</h4>
                           <iframe src={`https://embed.spotify.com/?uri=${maxUri}`} width="250" height="80" frameBorder="0" allowTransparency="true"></iframe>
+                          {maxValue}
                         </div>
                       </div>
                       <Slider
@@ -80,6 +83,7 @@ export default class FeatureView extends Component {
                         value={featureValue}
                         onChange={(newValue) => this.handleSliderChange(newValue, feature)}
                       />
+                      Current: {featureValue}, Median: {featureMinMax.median}
                     </div>
                   </div>
                 </div>

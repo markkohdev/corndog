@@ -5,8 +5,8 @@ const SpotifyWebApi = require('spotify-web-api-js');
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const FETCH_API_CALLED = 'FETCH_API_CALLED'
-export const FETCH_FEATURES_CALLED = 'FETCH_FEATURES_CALLED'
+export const FETCH_TRACKS = 'FETCH_TRACKS'
+export const FETCH_FEATURES = 'FETCH_FEATURES'
 export const FETCH_MIN_MAX = 'FETCH_MIN_MAX'
 export const REDIRECT_TO_FEATURES = 'REDIRECT_TO_FEATURES'
 
@@ -38,15 +38,20 @@ export function getFeaturesForTrack(track) {
 }
 
 
-export function calledApi(offset, songList = [], total) {
+export function fetchTracks(offset, songList = [], total) {
   return (dispatch, getState) => {
+    // TODO: Use localstorage here to get tracks.
+    // Use cachebust of 1 day.
+    // If found and cache-success, return all tracks in dispatch and total as length of tracks
+    // If not found, hit the API and save the tracks to localstorage.
+
     // Get the first set of tracks so we can get the total
     spotify.getMySavedTracks({offset}).then(function(data) {
       // Update the total number of tracks (for pagination purposes)
       const total = data.total;
       const tracks = data.items.map((item) => item.track);
       dispatch({
-        type: FETCH_API_CALLED,
+        type: FETCH_TRACKS,
         payload: {
           tracks,
           total
@@ -58,6 +63,11 @@ export function calledApi(offset, songList = [], total) {
 
 export function fetchFeatures(tracks, features) {
   return (dispatch, getState) => {
+    // TODO:  For each track, attempt to get the track features from localstorage (this will need to be map!)
+    // Use cachebust of 5 days
+    // If found and cache-succes, return the found features
+
+
     let newFeatures = [];
     const limit = 100;
     const current = features.length;
@@ -74,7 +84,7 @@ export function fetchFeatures(tracks, features) {
       });
 
       dispatch({
-        type: FETCH_FEATURES_CALLED,
+        type: FETCH_FEATURES,
         payload: {
           newFeatures
         }
@@ -96,12 +106,15 @@ export function extractMinMax(tracks, features) {
     let minTrack = tracks[0];
     let maxTrack = tracks[0];
 
+    const featureValues = [];
+
     // Iterate through each feature row and record the index of the min and max
     for(let j=0; j < features.length; j++) {
       const featureRow = features[j];
 
       // Get the current feature value from the row
       const featureValue = featureRow[i];
+      featureValues.push(featureValue);
 
       // Compare and update min and max accordingly
       if (featureValue < min) {
@@ -116,13 +129,17 @@ export function extractMinMax(tracks, features) {
       }
     }
 
+    featureValues.sort();
+    const median = featureValues[Math.floor(featureValues.length/2)];
+
     // Build our MinMax object
     const minMaxObject = {
       feature: feature,
       min: min,
       minTrack: minTrack,
       max: max,
-      maxTrack: maxTrack
+      maxTrack: maxTrack,
+      median: median
     };
 
     // Add the object to the minmax map
@@ -162,7 +179,7 @@ export function redirectToFeatures() {
 }
 
 export const actions = {
-  calledApi,
+  fetchTracks,
   fetchFeatures,
   redirectToFeatures,
   extractMinMax
@@ -172,7 +189,7 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [FETCH_API_CALLED] : (state, action) => {
+  [FETCH_TRACKS] : (state, action) => {
     let { offset, songList } = state;
     const { total, tracks } = action.payload;
     const newSonglist = songList.slice(0).concat(tracks);
@@ -184,7 +201,7 @@ const ACTION_HANDLERS = {
       total
     }
   },
-  [FETCH_FEATURES_CALLED] : (state, action) => {
+  [FETCH_FEATURES] : (state, action) => {
     let { features } = state;
     const { newFeatures } = action.payload;
     const newFeaturesState = features.slice(0).concat(newFeatures);

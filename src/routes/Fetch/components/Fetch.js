@@ -4,14 +4,14 @@ import './Fetch.scss'
 
 export default class FetchView extends Component {
   componentDidMount() {
-    const {calledApi, fetch: { offset, songList, total }} = this.props;
-    calledApi(offset, songList, total);
+    const {fetchTracks, fetch: { offset, songList, total }} = this.props;
+    fetchTracks(offset, songList, total);
   }
 
   componentDidUpdate() {
-    const {calledApi, fetchFeatures, redirectToFeatures, extractMinMax, fetch: { FEATURES, offset, songList, features, total, minMax }} = this.props;
+    const {fetchTracks, fetchFeatures, redirectToFeatures, extractMinMax, fetch: { FEATURES, offset, songList, features, total, minMax }} = this.props;
     if (songList.length < total) {
-      calledApi(offset, songList, total);
+      fetchTracks(offset, songList, total);
     } else if (features.length < total) {
       fetchFeatures(songList, features);
     } else if (Object.keys(minMax).length < FEATURES.length) {
